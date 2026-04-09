@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Violette - Développement Web & Automatisation</title>
+    <meta name="description" content="Développeuse web freelance spécialisée WordPress, WooCommerce et automatisation. Sites professionnels et workflows automatisés pour TPE/PME.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #1e1544 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #c084fc, #f9a8d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .header .name {
+            font-size: 1.5rem;
+            color: #e9d5ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .tagline {
+            font-size: 1.2rem;
+            color: #c4b5fd;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            color: #a78bfa;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin: 3rem 0 2rem;
+        }
+
+        /* Package Card */
+        .package-card {
+            background: rgba(139, 92, 246, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .package-card:hover {
+            background: rgba(139, 92, 246, 0.15);
+        }
+
+        .package-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .package-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .package-badge {
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .package-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .package-tagline {
+            color: #c4b5fd;
+            font-size: 0.95rem;
+        }
+
+        .package-price-wrapper {
+            text-align: right;
+        }
+
+        .package-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4ade80;
+        }
+
+        .package-price-note {
+            font-size: 0.75rem;
+            color: #a78bfa;
+            margin-top: 0.25rem;
+        }
+
+        .package-delivery {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #a78bfa;
+            margin-top: 0.5rem;
+        }
+
+        .chevron {
+            transition: transform 0.3s;
+        }
+
+        .chevron.open {
+            transform: rotate(180deg);
+        }
+
+        /* Package Details */
+        .package-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-top: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .package-details.open {
+            max-height: 2000px;
+        }
+
+        .package-details-content {
+            padding: 1.5rem;
+        }
+
+        .details-title {
+            font-weight: 600;
+            color: #a78bfa;
+            margin-bottom: 1rem;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .check-icon {
+            color: #4ade80;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(139, 92, 246, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #c4b5fd;
+            font-size: 0.95rem;
+        }
+
+        /* Payment Grid */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .payment-card {
+            background: rgba(139, 92, 246, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .payment-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-card .description {
+            color: #c4b5fd;
+            margin-bottom: 1rem;
+        }
+
+        .payment-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(139, 92, 246, 0.2);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-step-number {
+            background: #8b5cf6;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .discount-box {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .discount-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4ade80;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.25rem;
+            color: #c4b5fd;
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 1.125rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(139, 92, 246, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(139, 92, 246, 0.5);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: #a78bfa;
+            font-size: 0.875rem;
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .name {
+                font-size: 1.2rem;
+            }
+
+            .package-header-top {
+                flex-direction: column;
+            }
+
+            .package-price-wrapper {
+                text-align: left;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="name">Violette - Développeuse Freelance</div>
+            <h1>Développement Web & Automatisation</h1>
+            <p class="tagline">Solutions digitales pour TPE/PME</p>
+            <p class="subtitle">WordPress • WooCommerce • Automatisation Workflows</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Années d'expérience</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7-10j</div>
+                <div class="stat-label">Délai moyen</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Sites responsives</div>
+            </div>
+        </div>
+
+        <!-- Packages Web -->
+        <h2 class="section-title">Développement Web</h2>
+        
+        <div id="packages-web"></div>
+
+        <!-- Packages Automation -->
+        <h2 class="section-title">Automatisation</h2>
+        
+        <div id="packages-automation"></div>
+
+        <!-- Payment Options -->
+        <h2 class="section-title">Paiement Flexible</h2>
+        <div class="payment-grid">
+            <div class="payment-card">
+                <h3>Paiement en 3 fois</h3>
+                <p class="description">Pour tous les projets</p>
+                <div class="payment-step">
+                    <div class="payment-step-number">1</div>
+                    <span>30% à la signature</span>
+                </div>
+                <div class="payment-step">
+                    <div class="payment-step-number">2</div>
+                    <span>40% à mi-projet</span>
+                </div>
+                <div class="payment-step">
+                    <div class="payment-step-number">3</div>
+                    <span>30% à la livraison</span>
+                </div>
+            </div>
+            <div class="payment-card">
+                <h3>Paiement comptant</h3>
+                <p class="description">Réduction immédiate</p>
+                <div class="discount-box">
+                    <div class="discount-amount">-5%</div>
+                    <div style="margin-top: 0.5rem; font-size: 0.875rem;">sur le total</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <h2>Prêt à digitaliser votre activité ?</h2>
+            <p>Discutons de votre projet</p>
+            <div class="cta-buttons">
+                <a href="mailto:votre-email@exemple.fr" class="btn btn-primary">Me contacter</a>
+                <a href="tel:+33XXXXXXXXX" class="btn btn-secondary">Appeler</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>✨ Développement web professionnel • Automatisation workflows • Livraison rapide</p>
+            <p>💜 10 ans d'expérience • Code de qualité • Prix transparents</p>
+        </div>
+    </div>
+
+    <script>
+        // Packages Web
+        const packagesWeb = [
+            {
+                id: 'vitrine',
+                name: 'Site Vitrine Professionnel',
+                tagline: 'Votre présence en ligne clé en main',
+                price: '400€',
+                delivery: '5-7 jours',
+                ideal: 'Artisans, Consultants, Professionnels',
+                badgeColor: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+                includes: [
+                    'Design responsive professionnel',
+                    '5-7 pages personnalisées',
+                    'Formulaire de contact',
+                    'Optimisation mobile & tablette',
+                    'SEO de base',
+                    'Domaine .fr inclus (1 an)',
+                    'Hébergement inclus (1 an)',
+                    'Formation administration',
+                    'Support 2 semaines'
+                ]
+            },
+            {
+                id: 'reservation',
+                name: 'Système Réservation en Ligne',
+                tagline: 'Automatisez vos rendez-vous 24h/24',
+                price: '450€',
+                delivery: '5-7 jours',
+                ideal: 'Coiffeurs, Coachs, Esthéticiennes, Masseurs',
+                badgeColor: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+                includes: [
+                    'Calendrier de réservation automatique',
+                    'Confirmations par email',
+                    'Gestion des disponibilités',
+                    'Paiement acompte en ligne',
+                    'Design responsive',
+                    'Domaine + hébergement 1 an',
+                    'Formation complète',
+                    'Support 2 semaines'
+                ]
+            },
+            {
+                id: 'ecommerce',
+                name: 'Boutique E-commerce',
+                tagline: 'Vendez en ligne 24h/24',
+                price: '700€',
+                delivery: '7-10 jours',
+                ideal: 'Commerces, Artisans, Boutiques',
+                badgeColor: 'linear-gradient(135deg, #10b981, #14b8a6)',
+                includes: [
+                    'Boutique WooCommerce complète',
+                    'Jusqu\'à 50 produits',
+                    'Paiement sécurisé Stripe',
+                    'Gestion des stocks',
+                    'Emails automatiques',
+                    'Responsive mobile optimisé',
+                    'Domaine + hébergement 1 an',
+                    'Formation administration',
+                    'Support 2 semaines'
+                ]
+            },
+            {
+                id: 'traiteur',
+                name: 'Sites Traiteurs & Foodtrucks',
+                tagline: 'Solutions spécialisées restauration',
+                price: '800€ - 1 800€',
+                priceNote: 'Selon fonctionnalités',
+                delivery: '2-4 semaines',
+                ideal: 'Traiteurs, Chefs à domicile, Foodtrucks',
+                badgeColor: 'linear-gradient(135deg, #f97316, #ef4444)',
+                includes: [
+                    'Design élégant adapté à votre activité',
+                    'Présentation menus & prestations',
+                    'Galerie de réalisations',
+                    'Système de commande/réservation',
+                    'Options e-commerce (niveau Pro)',
+                    'Paiements Stripe & PayPal',
+                    'Calendrier des disponibilités',
+                    'Formation complète',
+                    'Support 1-2 mois'
+                ]
+            },
+            {
+                id: 'intervention',
+                name: 'Intervention / Debug',
+                tagline: 'Correction de sites existants',
+                price: '80€/h',
+                priceNote: 'Minimum 2h',
+                delivery: '2-5 jours',
+                ideal: 'Sites WordPress cassés ou lents',
+                badgeColor: 'linear-gradient(135deg, #f59e0b, #f97316)',
+                includes: [
+                    'Diagnostic complet gratuit',
+                    'Correction bugs techniques',
+                    'Optimisation vitesse',
+                    'Sécurisation du site',
+                    'Mise à jour WordPress/plugins',
+                    'Tests complets',
+                    'Rapport détaillé',
+                    'Support 1 semaine'
+                ]
+            }
+        ];
+
+        // Packages Automation
+        const packagesAutomation = [
+            {
+                id: 'audit-auto',
+                name: 'Audit Automatisation',
+                tagline: 'Identifiez vos gains de temps potentiels',
+                price: '200€',
+                delivery: '2-3 jours',
+                ideal: 'Toutes entreprises',
+                badgeColor: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+                includes: [
+                    'Analyse de vos processus actuels',
+                    'Identification tâches automatisables',
+                    'Estimation temps gagné par automatisation',
+                    'Priorisation par ROI',
+                    'Rapport détaillé avec recommandations',
+                    'Estimation budget pour chaque automatisation'
+                ]
+            },
+            {
+                id: 'auto-simple',
+                name: 'Automatisation Simple',
+                tagline: '1-3 workflows automatisés',
+                price: '400€ - 800€',
+                delivery: '3-7 jours',
+                ideal: 'PME, E-commerce, Agences',
+                badgeColor: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+                includes: [
+                    'Configuration 1-3 workflows',
+                    'Intégration outils existants (Zapier, Make)',
+                    'Auto-réponse emails',
+                    'Synchronisation données (CRM, Sheets)',
+                    'Notifications automatiques',
+                    'Tests complets',
+                    'Formation utilisation',
+                    'Support 2 semaines'
+                ]
+            },
+            {
+                id: 'auto-complexe',
+                name: 'Automatisation Complète',
+                tagline: 'Système end-to-end automatisé',
+                price: '1 000€ - 2 500€',
+                delivery: '1-3 semaines',
+                ideal: 'Process complets à automatiser',
+                badgeColor: 'linear-gradient(135deg, #10b981, #059669)',
+                includes: [
+                    'Analyse complète du process',
+                    'Architecture système automatisé',
+                    'Intégrations multiples (APIs, webhooks)',
+                    'Scripts personnalisés si besoin',
+                    'Workflows complexes multi-étapes',
+                    'Dashboard de suivi',
+                    'Documentation complète',
+                    'Formation équipe',
+                    'Support 1 mois + maintenance optionnelle'
+                ]
+            },
+            {
+                id: 'formation-auto',
+                name: 'Formation Automatisation',
+                tagline: 'Apprenez à automatiser vous-même',
+                price: '150€/h',
+                delivery: 'Selon planning',
+                ideal: 'Équipes souhaitant être autonomes',
+                badgeColor: 'linear-gradient(135deg, #f59e0b, #f97316)',
+                includes: [
+                    'Formation Zapier/Make',
+                    'Bonnes pratiques automatisation',
+                    'Cas d\'usage concrets',
+                    'Exercices pratiques',
+                    'Support post-formation (2 semaines)',
+                    'Ressources & templates'
+                ]
+            }
+        ];
+
+        // Render packages
+        function renderPackages(packages, containerId) {
+            const container = document.getElementById(containerId);
+            packages.forEach(pkg => {
+                const card = document.createElement('div');
+                card.className = 'package-card';
+                card.innerHTML = `
+                    <div class="package-header" onclick="togglePackage('${pkg.id}')">
+                        <div class="package-header-top">
+                            <div>
+                                <div class="package-badge" style="background: ${pkg.badgeColor}">${pkg.ideal}</div>
+                                <h3 class="package-title">${pkg.name}</h3>
+                                <p class="package-tagline">${pkg.tagline}</p>
+                            </div>
+                            <div class="package-price-wrapper">
+                                <div class="package-price">${pkg.price}</div>
+                                ${pkg.priceNote ? `<div class="package-price-note">${pkg.priceNote}</div>` : ''}
+                                <div class="package-delivery">
+                                    🕐 ${pkg.delivery}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 1rem;">
+                            <span class="chevron" id="chevron-${pkg.id}">▼</span>
+                        </div>
+                    </div>
+                    <div class="package-details" id="details-${pkg.id}">
+                        <div class="package-details-content">
+                            <h4 class="details-title">Ce qui est inclus :</h4>
+                            <div class="details-grid">
+                                ${pkg.includes.map(item => `
+                                    <div class="detail-item">
+                                        <span class="check-icon">✓</span>
+                                        <span>${item}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Toggle package details
+        function togglePackage(id) {
+            const details = document.getElementById(`details-${id}`);
+            const chevron = document.getElementById(`chevron-${id}`);
+            
+            if (details.classList.contains('open')) {
+                details.classList.remove('open');
+                chevron.classList.remove('open');
+            } else {
+                details.classList.add('open');
+                chevron.classList.add('open');
+            }
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPackages(packagesWeb, 'packages-web');
+            renderPackages(packagesAutomation, 'packages-automation');
+        });
+    </script>
+</body>
+</html>
